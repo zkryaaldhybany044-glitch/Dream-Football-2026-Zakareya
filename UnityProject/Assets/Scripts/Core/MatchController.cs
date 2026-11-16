@@ -14,6 +14,16 @@ namespace Zakareya.DreamFootball.Core
 
         private void Awake() => clock = GetComponent<MatchClock>();
 
+        private void Update()
+        {
+            if (clock == null || clock.IsRunning || !clock.IsComplete) return;
+
+            if (phase == MatchPhase.FirstHalf)
+                ReachHalfTime();
+            else if (phase == MatchPhase.SecondHalf)
+                EndMatch();
+        }
+
         public void BeginFirstHalf()
         {
             if (phase != MatchPhase.PreMatch) return;
