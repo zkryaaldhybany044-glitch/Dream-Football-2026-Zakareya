@@ -26,6 +26,7 @@ Open this folder (UnityProject) as the Unity project root.
 - `PitchBuilder`: provisional regulation-sized pitch surface and markings for blockout tests. This is geometry for testing gameplay, not final stadium art.
 - `MatchFollowCamera`: smoothed third-person camera that follows the controlled player and subtly accounts for the ball.
 - `GoalkeeperMotor`: basic lateral positioning with a short linear estimate of the ball's goal-line crossing point when it is approaching; this is not a save, dive, or catch system.
+- `GoalkeeperSaveZone`: optional trigger volume that deflects an incoming ball away from the defended goal with configurable rebound speed, lateral direction and lift; this is a physics prototype, not an animated save.
 - `MatchScoreboard` and `GoalTrigger`: score tracking and goal-mouth trigger registration for the ball; goal volumes enforce trigger-collider setup and warn when the scoreboard reference is missing.
 - `KickoffResetter`: optional delayed restart helper that restores the ball and assigned players to explicit spawn transforms.
 
@@ -60,7 +61,7 @@ The web prototype remains in the repository root and is not the native Unity pro
 4. Add separate UI touch targets with `TouchActionButton`: configure one as Sprint and assign the motor; configure Pass and Shoot buttons and assign the player's `PlayerBallActions`. Optionally assign world-space pass/shot target transforms. If no target is assigned, the action uses the controlled player's forward direction.
 5. Add a Rigidbody and collider to the ball and attach `MatchBall`. Add a `MatchScoreboard` to a match manager. Each goal mouth needs a trigger collider and `GoalTrigger` with its team-side setting and scoreboard reference.
 6. Add `MatchController` and `MatchClock` to the match manager. For restarts, configure `KickoffResetter` with the ball, a ball kickoff transform, and matching player/player-spawn arrays.
-7. Add `MatchFollowCamera` to the camera and assign its target player. Add `GoalkeeperMotor` to each goalkeeper and assign the ball's `MatchBall` component. Set `defendPositiveXGoal` according to the end being defended.
+7. Add `MatchFollowCamera` to the camera and assign its target player. Add `GoalkeeperMotor` to each goalkeeper and assign the ball's `MatchBall` component. Set `defendPositiveXGoal` according to the end being defended. Optionally add `GoalkeeperSaveZone` to a trigger collider in the keeper's reachable area; set its defended end to match the goalkeeper. The ball's Rigidbody must be able to enter this trigger.
 
 The checklist describes required manual setup; it does not mean a scene has already been created or validated. UI touch controls require a functioning EventSystem, and all serialized references must be assigned in the Inspector.
 
@@ -75,3 +76,8 @@ Clock timing values and ball physics tuning values are clamped to safe minimums 
 ## Goalkeeper positioning notes
 
 `GoalkeeperMotor` estimates the ball's lateral crossing point at the configured goal line using its current velocity, but only when the ball is moving toward the defended end and the estimated crossing is within the prediction horizon. This is a simple linear estimate: it does not model ball bounce, spin, drag during the prediction interval, keeper reach, or save animations. Tune `predictionHorizon`, `minimumApproachSpeed`, `reactionDistance`, and `lateralSpeed` after the component is connected to a real match scene. It remains positioning logic only; diving, catching, parrying, and save decisions are not implemented.
+
+
+## Goalkeeper save-zone notes
+
+Place `GoalkeeperSaveZone` on a trigger collider covering the intended keeper contact area. Configure the defended X end consistently with `GoalkeeperMotor`. When the ball enters while travelling toward that goal above the minimum incoming speed, the component redirects its Rigidbody velocity away from the goal and adds a configurable lateral rebound and small lift. The trigger is intentionally optional and should not overlap the goal line or field in a way that causes unintended deflections. The response is immediate and has no dive animation, reach check, hand contact, catch, or keeper decision AI. Test trigger dimensions and rebound tuning in Unity before treating it as match-ready.
