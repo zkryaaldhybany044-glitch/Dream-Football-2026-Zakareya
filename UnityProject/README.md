@@ -18,7 +18,8 @@ Open this folder (UnityProject) as the Unity project root.
 ## Implemented code foundation (not yet Unity-tested)
 
 - `MatchClock` and `MatchController`: separate 45-minute halves, pause/resume, automatic halftime/fulltime transitions, and inspector-time validation of clock settings.
-- `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`).
+- `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`) and a read-only movement-state interface.
+- `BallControlAssist`: capped Rigidbody force assistance that keeps a nearby ball in front of a moving player for a basic dribbling prototype.
 - `TouchJoystick`: UI pointer bridge for a virtual movement stick.
 - `TouchActionButton`: touch action bridge for sprint (hold), pass and shot (press).
 - `MatchBall` and `PlayerBallActions`: Rigidbody ball physics plus range-checked pass/shot impulses; ball tuning values are clamped during Inspector validation.
@@ -54,7 +55,7 @@ The web prototype remains in the repository root and is not the native Unity pro
 ## Scene wiring checklist (manual Unity Editor work still required)
 
 1. Create a match scene and add a ground object with a collider. Add `PitchBuilder` to an empty parent; assign grass and line materials where available.
-2. Add a player GameObject with `CharacterController`, `FootballerMotor`, and `PlayerBallActions`. Assign the follow camera to the motor's movement-camera field and assign the ball to the ball-actions component.
+2. Add a player GameObject with `CharacterController`, `FootballerMotor`, `PlayerBallActions`, and `BallControlAssist`. Assign the follow camera to the motor's movement-camera field and assign the ball to both ball-related components.
 3. Create a Canvas with a `GraphicRaycaster` and an `EventSystem` using the Input System UI module. Add a joystick background and handle; assign both RectTransforms and the player motor to `TouchJoystick`.
 4. Add separate UI touch targets with `TouchActionButton`: configure one as Sprint and assign the motor; configure Pass and Shoot buttons and assign the player's `PlayerBallActions`. Optionally assign world-space pass/shot target transforms. If no target is assigned, the action uses the controlled player's forward direction.
 5. Add a Rigidbody and collider to the ball and attach `MatchBall`. Add a `MatchScoreboard` to a match manager. Each goal mouth needs a trigger collider and `GoalTrigger` with its team-side setting and scoreboard reference.
@@ -66,3 +67,7 @@ The checklist describes required manual setup; it does not mean a scene has alre
 ## Latest hardening
 
 Clock timing values and ball physics tuning values are clamped to safe minimums during Inspector validation. Goal triggers automatically mark their collider as a trigger and warn if no scoreboard is assigned. These checks reduce common setup mistakes but are not a substitute for compiling and testing the scene in the target Unity Editor.
+
+## Ball control notes
+
+`BallControlAssist` is an optional early dribbling aid, not a full possession system. It only applies a capped planar Rigidbody force while the controlled player is moving and the ball is close and near ground level. Tune its control radius, desired distance, gain, damping, and acceleration in the Inspector after testing with the actual ball mass, collider, and player scale. Disable the component if it causes unwanted ball pull or jitter. It does not provide foot-contact animation, shielding, tackles, or persistent team possession.
