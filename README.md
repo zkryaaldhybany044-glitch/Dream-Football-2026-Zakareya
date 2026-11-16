@@ -51,3 +51,10 @@
 يُبنى APK تلقائياً بواسطة GitHub Actions عند تحديث ملفات Android أو عبر تشغيل workflow يدوياً. إذا لم يظهر ملف APK في صفحة الإصدار بعد، انتظر حتى تنتهي مهمة **Build Dream Football Android APK** بنجاح.
 
 **مهم:** هذا APK تجريبي من نوع WebView، وليس لعبة Android أصلية بالكامل؛ يحتاج اتصال إنترنت، كما يجب أن يكون موقع GitHub Pages للعبة منشوراً حتى يفتح محتوى اللعبة. ملف APK مبني بنمط debug للتجربة والتثبيت المباشر، وليس إصداراً موقعاً بمفتاح نشر تجاري لمتجر Google Play.
+
+
+## Android Offline APK
+
+The Android APK build packages the game HTML and the pinned Three.js module (three@0.170.0) into the APK assets. The Android app opens the bundled local page, so gameplay does not depend on GitHub Pages or an internet connection after installation. The GitHub Actions build downloads Three.js while building the APK; this is a build-time dependency only.
+
+The APK produced by this workflow is debug-signed for testing and is not a Play Store production-signed release. Download the latest APK from the GitHub Releases page.
