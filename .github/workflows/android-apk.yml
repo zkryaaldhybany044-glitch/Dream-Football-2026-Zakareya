@@ -1,0 +1,70 @@
+name: Build Dream Football Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/android-apk.yml'
+      - 'index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build installable Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Build debug APK
+        run: gradle --no-daemon --stacktrace assembleDebug
+        working-directory: android
+
+      - name: Prepare downloadable APK
+        run: |
+          mkdir -p release
+          cp android/app/build/outputs/apk/debug/app-debug.apk release/DF26-Android.apk
+          sha256sum release/DF26-Android.apk > release/DF26-Android.apk.sha256
+
+      - name: Upload APK build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dream-Football-2026-Android-APK
+          path: release/*
+          retention-days: 30
+
+      - name: Publish APK release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: df26-android-v1.0.0
+          name: Dream Football 2026 - Android v1.0.0
+          body: |
+            Installable Android debug APK for Dream Football 2026 Zakareya.
+
+            This app is a landscape Android WebView wrapper and requires internet access to load the hosted 3D game.
+            It is not an offline-native game or a Play Store-signed production release.
+          files: |
+            release/DF26-Android.apk
+            release/DF26-Android.apk.sha256
+          make_latest: true
