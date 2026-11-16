@@ -6,6 +6,7 @@ namespace Zakareya.DreamFootball.Core
     public sealed class MatchController : MonoBehaviour
     {
         [SerializeField] private MatchPhase phase = MatchPhase.PreMatch;
+        private MatchPhase phaseBeforePause = MatchPhase.FirstHalf;
         private MatchClock clock;
 
         public MatchPhase Phase => phase;
@@ -15,8 +16,9 @@ namespace Zakareya.DreamFootball.Core
 
         public void BeginFirstHalf()
         {
-            if (phase != MatchPhase.PreMatch && phase != MatchPhase.HalfTime) return;
+            if (phase != MatchPhase.PreMatch) return;
             phase = MatchPhase.FirstHalf;
+            clock.ResetClock();
             clock.StartClock();
         }
 
@@ -31,11 +33,13 @@ namespace Zakareya.DreamFootball.Core
         {
             if (phase != MatchPhase.HalfTime) return;
             phase = MatchPhase.SecondHalf;
+            clock.ResetClock();
             clock.StartClock();
         }
 
         public void EndMatch()
         {
+            if (phase == MatchPhase.FullTime) return;
             clock.StopClock();
             phase = MatchPhase.FullTime;
         }
@@ -44,12 +48,13 @@ namespace Zakareya.DreamFootball.Core
         {
             if (paused && (phase == MatchPhase.FirstHalf || phase == MatchPhase.SecondHalf))
             {
+                phaseBeforePause = phase;
                 clock.StopClock();
                 phase = MatchPhase.Paused;
             }
             else if (!paused && phase == MatchPhase.Paused)
             {
-                phase = MatchPhase.SecondHalf;
+                phase = phaseBeforePause;
                 clock.StartClock();
             }
         }
