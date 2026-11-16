@@ -270,7 +270,7 @@ function makePlayer(team,data){
  for(const s of [-1,1]){
   const leg=new THREE.Group();leg.position.set(s*.205,.79,0);rootPlayer.add(leg);
   capsule(leg,.135,.42,socks,[0,-.3,0]);
-  const shin=new THREE.Group();shin.position.y=-.54;leg.add(shin);capsule(shin,.105,.38,skin===null?skin:socks,[0,-.24,0]);
+  const shin=new THREE.Group();shin.position.y=-.54;leg.add(shin);capsule(shin,.105,.38,socks,[0,-.24,0]);
   const foot=new THREE.Mesh(new THREE.BoxGeometry(.22,.13,.38),boot);foot.position.set(0,-.49,-.1);shin.add(foot);
   limbs.legs.push({upper:leg,lower:shin});
   const arm=new THREE.Group();arm.position.set(s*.48,1.78,0);rootPlayer.add(arm);
@@ -353,7 +353,7 @@ function nearestMate(p,forwardOnly=true){
 }
 function releaseBall(dir,power,lift=2.5){
  if(!possession)return;
- const kicker=possession;lastTouch=kicker;ball.position.set(kicker.position.x,kicker.position.y+1.05,kicker.position.z);
+ const kicker=possession;lastTouch=kicker;kicker.userData.kick=.42;ball.position.set(kicker.position.x,kicker.position.y+1.05,kicker.position.z);
  ballVel.copy(dir).normalize().multiplyScalar(power);ballVel.y=lift;possession=null;
  kicker.userData.think=.9;
 }
