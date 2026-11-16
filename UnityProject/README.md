@@ -17,18 +17,20 @@ Open this folder (UnityProject) as the Unity project root.
 
 ## Implemented code foundation (not yet Unity-tested)
 
-- `MatchClock` and `MatchController`: initial match phase and clock logic.
+- `MatchClock` and `MatchController`: separate 45-minute halves, pause/resume, and automatic halftime/fulltime transitions.
 - `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`).
 - `TouchJoystick`: UI pointer bridge for a virtual movement stick.
 - `MatchBall` and `PlayerBallActions`: Rigidbody ball physics plus range-checked pass/shot impulses.
 - `PitchBuilder`: provisional regulation-sized pitch surface and markings for blockout tests. This is geometry for testing gameplay, not final stadium art.
+- `MatchFollowCamera`: smoothed third-person camera that follows the controlled player and subtly accounts for the ball.
+- `GoalkeeperMotor`: basic lateral goalkeeper positioning prototype; it does not yet implement diving, catching, or full save logic.
 
 These scripts still need to be assembled in a Unity scene, assigned references/materials, compiled in the target Unity Editor, and tested on Android. No playable APK exists yet.
 
 ## Planned implementation sequence
-1. **Foundation:** project settings, URP renderer, input and Android build configuration.
+1. **Project validation:** verify Unity package compatibility, complete project settings, URP renderer, input and Android build configuration.
 2. **Visual vertical slice:** licensed realistic humanoid player, humanoid rig, retargeted locomotion/turn/sprint/kick animations, pitch and stadium lighting.
-3. **Playable match:** ball control, passing, shooting, goalkeeper, camera, touch controls.
+3. **Playable match:** ball control, passing, shooting, goal detection and restart flow, goalkeeper saves, touch controls and camera integration.
 4. **Team simulation:** 11v11 formations, player roles, team tactics, opponent AI, substitutions and match rules.
 5. **Offline Android build:** package all required assets, build ARM64 APK in CI, install and profile on the target phone.
 
@@ -39,7 +41,7 @@ GitHub Actions cannot activate Unity by guessing credentials. A cloud build need
 ## Asset and performance policy
 - Use original or explicitly licensed models, animations, audio, kits, badges and fonts.
 - Do not extract DLS assets or use official club/player likenesses without permission.
-- The target phone has 8 GB RAM, but RAM alone does not identify its GPU or CPU. Performance targets must be validated on the actual device.
+- Performance targets must be validated on the actual device; specifications alone do not establish real frame rate.
 - Aim for scalable quality settings and a stable 30 FPS baseline before attempting 60 FPS.
 
 ## Legacy browser version
