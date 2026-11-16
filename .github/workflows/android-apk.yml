@@ -59,8 +59,8 @@ jobs:
       - name: Publish APK release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: df26-android-v1.0.0
-          name: Dream Football 2026 - Android v1.0.0
+          tag_name: df26-android-v1.0.1
+          name: Dream Football 2026 - Android v1.0.1
           body: |
             Installable Android debug APK for Dream Football 2026 Zakareya.
 
