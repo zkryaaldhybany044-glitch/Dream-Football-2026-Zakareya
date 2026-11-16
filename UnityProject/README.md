@@ -17,15 +17,15 @@ Open this folder (UnityProject) as the Unity project root.
 
 ## Implemented code foundation (not yet Unity-tested)
 
-- `MatchClock` and `MatchController`: separate 45-minute halves, pause/resume, and automatic halftime/fulltime transitions.
+- `MatchClock` and `MatchController`: separate 45-minute halves, pause/resume, automatic halftime/fulltime transitions, and inspector-time validation of clock settings.
 - `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`).
 - `TouchJoystick`: UI pointer bridge for a virtual movement stick.
 - `TouchActionButton`: touch action bridge for sprint (hold), pass and shot (press).
-- `MatchBall` and `PlayerBallActions`: Rigidbody ball physics plus range-checked pass/shot impulses.
+- `MatchBall` and `PlayerBallActions`: Rigidbody ball physics plus range-checked pass/shot impulses; ball tuning values are clamped during Inspector validation.
 - `PitchBuilder`: provisional regulation-sized pitch surface and markings for blockout tests. This is geometry for testing gameplay, not final stadium art.
 - `MatchFollowCamera`: smoothed third-person camera that follows the controlled player and subtly accounts for the ball.
 - `GoalkeeperMotor`: basic lateral goalkeeper positioning prototype; it does not yet implement diving, catching, or full save logic.
-- `MatchScoreboard` and `GoalTrigger`: score tracking and goal-mouth trigger registration for the ball.
+- `MatchScoreboard` and `GoalTrigger`: score tracking and goal-mouth trigger registration for the ball; goal volumes enforce trigger-collider setup and warn when the scoreboard reference is missing.
 - `KickoffResetter`: optional delayed restart helper that restores the ball and assigned players to explicit spawn transforms.
 
 These scripts still need to be assembled in a Unity scene, assigned references/materials, compiled in the target Unity Editor, and tested on Android. No playable APK exists yet.
@@ -62,3 +62,7 @@ The web prototype remains in the repository root and is not the native Unity pro
 7. Add `MatchFollowCamera` to the camera and assign its target player. Add `GoalkeeperMotor` to each goalkeeper and assign its ball and goal-line references.
 
 The checklist describes required manual setup; it does not mean a scene has already been created or validated. UI touch controls require a functioning EventSystem, and all serialized references must be assigned in the Inspector.
+
+## Latest hardening
+
+Clock timing values and ball physics tuning values are clamped to safe minimums during Inspector validation. Goal triggers automatically mark their collider as a trigger and warn if no scoreboard is assigned. These checks reduce common setup mistakes but are not a substitute for compiling and testing the scene in the target Unity Editor.
