@@ -24,13 +24,15 @@ Open this folder (UnityProject) as the Unity project root.
 - `PitchBuilder`: provisional regulation-sized pitch surface and markings for blockout tests. This is geometry for testing gameplay, not final stadium art.
 - `MatchFollowCamera`: smoothed third-person camera that follows the controlled player and subtly accounts for the ball.
 - `GoalkeeperMotor`: basic lateral goalkeeper positioning prototype; it does not yet implement diving, catching, or full save logic.
+- `MatchScoreboard` and `GoalTrigger`: score tracking and goal-mouth trigger registration for the ball.
+- `KickoffResetter`: optional delayed restart helper that restores the ball and assigned players to explicit spawn transforms.
 
 These scripts still need to be assembled in a Unity scene, assigned references/materials, compiled in the target Unity Editor, and tested on Android. No playable APK exists yet.
 
 ## Planned implementation sequence
 1. **Project validation:** verify Unity package compatibility, complete project settings, URP renderer, input and Android build configuration.
 2. **Visual vertical slice:** licensed realistic humanoid player, humanoid rig, retargeted locomotion/turn/sprint/kick animations, pitch and stadium lighting.
-3. **Playable match:** ball control, passing, shooting, goal detection and restart flow, goalkeeper saves, touch controls and camera integration.
+3. **Playable match:** integrate and test ball control, passing, shooting, goal detection/restart, goalkeeper saves, touch controls and camera in a real scene.
 4. **Team simulation:** 11v11 formations, player roles, team tactics, opponent AI, substitutions and match rules.
 5. **Offline Android build:** package all required assets, build ARM64 APK in CI, install and profile on the target phone.
 
