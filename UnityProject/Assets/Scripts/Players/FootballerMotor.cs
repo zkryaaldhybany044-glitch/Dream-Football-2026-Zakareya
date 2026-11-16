@@ -24,6 +24,9 @@ namespace Zakareya.DreamFootball.Players
         private bool sprintRequested;
         private float verticalVelocity;
 
+        public Vector2 MoveInput => moveInput;
+        public bool HasMoveInput => moveInput.sqrMagnitude > 0.01f;
+
         private static readonly int MoveSpeed = Animator.StringToHash("MoveSpeed");
         private static readonly int IsSprinting = Animator.StringToHash("IsSprinting");
 
