@@ -309,10 +309,11 @@ function updateMatch(dt){
  if(gameTime>=matchDuration){started=false;$('hint').textContent='انتهت المباراة • اضغط إعادة المباراة';$('startBtn').textContent='إعادة المباراة';$('start').style.display='grid'}
 }
 function updateCamera(dt){
- const focus=(cameraMode===2?ballPos:controlled.position).clone();let desired;
- if(cameraMode===0)desired=controlled.position.clone().add(new THREE.Vector3(0,28,-34));
- else if(cameraMode===1)desired=controlled.position.clone().add(new THREE.Vector3(0,15,-19));
- else desired=ballPos.clone().add(new THREE.Vector3(0,34,-26));
+ const subject=celebrating&&scorer?scorer.position:controlled.position;
+ const focus=(cameraMode===2&&!celebrating?ballPos:subject).clone();let desired;
+ if(cameraMode===0)desired=subject.clone().add(new THREE.Vector3(0,28,-34));
+ else if(cameraMode===1)desired=subject.clone().add(new THREE.Vector3(0,15,-19));
+ else desired=focus.clone().add(new THREE.Vector3(0,34,-26));
  desired.x+=focus.x*.22;camera.position.lerp(desired,Math.min(1,dt*2.4));camera.lookAt(focus.x*.45,0,focus.z+6);
 }
 function frame(){
