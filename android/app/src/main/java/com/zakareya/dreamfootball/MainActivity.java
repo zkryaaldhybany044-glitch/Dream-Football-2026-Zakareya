@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
   getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
   gameView=new WebView(this); gameView.setBackgroundColor(Color.rgb(7,27,23));
   WebSettings s=gameView.getSettings(); s.setJavaScriptEnabled(true); s.setDomStorageEnabled(true);
-  s.setDatabaseEnabled(true); s.setAllowFileAccess(true); s.setAllowContentAccess(true);
+  s.setDatabaseEnabled(true); s.setAllowFileAccess(true); s.setAllowContentAccess(true); s.setAllowFileAccessFromFileURLs(true); s.setAllowUniversalAccessFromFileURLs(true);
   s.setMediaPlaybackRequiresUserGesture(false); s.setLoadsImagesAutomatically(true);
   gameView.setWebChromeClient(new WebChromeClient()); gameView.setWebViewClient(new WebViewClient());
   setContentView(gameView); gameView.loadUrl("file:///android_asset/index.html");
