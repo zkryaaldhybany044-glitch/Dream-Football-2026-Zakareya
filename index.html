@@ -333,6 +333,8 @@ function animateRig(p,dt){
  u.limbs.arms[0].upper.rotation.x=-Math.sin(u.phase)*.52*swing-.08;
  u.limbs.arms[1].upper.rotation.x=Math.sin(u.phase)*.52*swing-.08;
  u.limbs.arms[0].lower.rotation.x=-.12-.15*swing;u.limbs.arms[1].lower.rotation.x=-.12-.15*swing;
+ if(u.role==='GK'){u.limbs.arms[0].upper.rotation.z=THREE.MathUtils.lerp(u.limbs.arms[0].upper.rotation.z,-.85*u.diving,dt*8);u.limbs.arms[1].upper.rotation.z=THREE.MathUtils.lerp(u.limbs.arms[1].upper.rotation.z,.85*u.diving,dt*8);}
+ if(u.kick>0){u.kick=Math.max(0,u.kick-dt);const k=Math.sin((1-u.kick/.42)*Math.PI);u.limbs.legs[0].upper.rotation.x-=.9*k;u.limbs.legs[0].lower.rotation.x+=.5*k;}
  p.position.y=Math.sin(u.phase*2)*.045*swing;
 }
 const ballShadow=new THREE.Mesh(new THREE.CircleGeometry(.48,20),new THREE.MeshBasicMaterial({color:0x07150c,transparent:true,opacity:.25,depthWrite:false}));
