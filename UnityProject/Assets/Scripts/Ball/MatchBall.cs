@@ -12,6 +12,14 @@ namespace Zakareya.DreamFootball.Ball
 
         private Rigidbody body;
 
+        private void OnValidate()
+        {
+            radius = Mathf.Max(0.01f, radius);
+            linearDamping = Mathf.Max(0f, linearDamping);
+            angularDamping = Mathf.Max(0f, angularDamping);
+            maxSpeed = Mathf.Max(0f, maxSpeed);
+        }
+
         public Rigidbody Body => body;
         public Vector3 Velocity => body != null ? body.velocity : Vector3.zero;
 
