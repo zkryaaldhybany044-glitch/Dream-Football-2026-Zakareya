@@ -17,6 +17,12 @@ namespace Zakareya.DreamFootball.Core
 
         private int lastReportedMinute = -1;
 
+        private void OnValidate()
+        {
+            halfMinutes = Mathf.Max(1f, halfMinutes);
+            realSecondsPerMatchMinute = Mathf.Max(0.1f, realSecondsPerMatchMinute);
+        }
+
         public int ElapsedMinutes =>
             Mathf.Clamp(Mathf.FloorToInt(ElapsedMatchSeconds / 60f), 0, Mathf.CeilToInt(halfMinutes));
 
