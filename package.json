@@ -1,0 +1,9 @@
+{
+  "name": "dream-football-2026-zakareya",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dream Football 2026 Android WebView wrapper build",
+  "scripts": {
+    "build:apk": "cd android && gradle assembleDebug"
+  }
+}
