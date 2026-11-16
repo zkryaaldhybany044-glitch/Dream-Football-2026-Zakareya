@@ -118,8 +118,18 @@ namespace Zakareya.DreamFootball.Environment
         {
             Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
             if (shader == null) shader = Shader.Find("Unlit/Color");
-            Material material = new Material(shader);
-            material.color = Color.white;
+            if (shader == null) shader = Shader.Find("Sprites/Default");
+
+            if (shader == null)
+            {
+                Debug.LogError("PitchBuilder: no supported shader was found. Assign a line material in the Inspector.");
+                return null;
+            }
+
+            Material material = new Material(shader)
+            {
+                color = Color.white
+            };
             return material;
         }
     }
