@@ -39,3 +39,15 @@
 - الشعارات والأطقم والوجوه الرسمية تتطلب أصولاً مرخصة. لا تتضمن هذه النسخة أصول DLS أو صوراً رسمية.
 - الذكاء الاصطناعي والفيزياء والأنيميشن أنظمة أولية؛ لا تدّعي هذه النسخة محاكاة احترافية كاملة أو جودة DLS26.
 - المشروع تطبيق ويب/PWA وليس ملف APK أصلياً. يمكن تثبيته من المتصفح على Android بعد نشره.
+
+
+## Android APK
+يوفر المستودع مشروع Android بسيطاً يفتح نسخة اللعبة المنشورة في وضع أفقي، مع دعم اللمس وإبقاء الشاشة مضاءة.
+
+- ملف APK المتوقع بعد نجاح البناء: [DF26-Android.apk](https://github.com/zkryaaldhybany044-glitch/Dream-Football-2026-Zakareya/releases/download/df26-android-v1.0.0/DF26-Android.apk)
+- صفحة الإصدارات: https://github.com/zkryaaldhybany044-glitch/Dream-Football-2026-Zakareya/releases
+- سجل بناء APK: https://github.com/zkryaaldhybany044-glitch/Dream-Football-2026-Zakareya/actions/workflows/android-apk.yml
+
+يُبنى APK تلقائياً بواسطة GitHub Actions عند تحديث ملفات Android أو عبر تشغيل workflow يدوياً. إذا لم يظهر ملف APK في صفحة الإصدار بعد، انتظر حتى تنتهي مهمة **Build Dream Football Android APK** بنجاح.
+
+**مهم:** هذا APK تجريبي من نوع WebView، وليس لعبة Android أصلية بالكامل؛ يحتاج اتصال إنترنت، كما يجب أن يكون موقع GitHub Pages للعبة منشوراً حتى يفتح محتوى اللعبة. ملف APK مبني بنمط debug للتجربة والتثبيت المباشر، وليس إصداراً موقعاً بمفتاح نشر تجاري لمتجر Google Play.
