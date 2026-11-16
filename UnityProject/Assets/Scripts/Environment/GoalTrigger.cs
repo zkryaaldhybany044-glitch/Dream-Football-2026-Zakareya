@@ -21,7 +21,17 @@ namespace Zakareya.DreamFootball.Environment
         private void Reset()
         {
             Collider goalCollider = GetComponent<Collider>();
-            goalCollider.isTrigger = true;
+            if (goalCollider != null) goalCollider.isTrigger = true;
+        }
+
+        private void OnValidate()
+        {
+            Collider goalCollider = GetComponent<Collider>();
+            if (goalCollider != null && !goalCollider.isTrigger)
+                goalCollider.isTrigger = true;
+
+            if (scoreboard == null)
+                Debug.LogWarning("GoalTrigger: assign a MatchScoreboard reference in the Inspector.", this);
         }
 
         private void OnTriggerEnter(Collider other)
