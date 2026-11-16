@@ -1,0 +1,19 @@
+{
+  "name": "Dream Football 2026 - Zakareya",
+  "short_name": "DF26",
+  "description": "Three-dimensional football game prototype",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#071b17",
+  "theme_color": "#071b17",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
