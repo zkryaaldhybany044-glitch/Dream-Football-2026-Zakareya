@@ -6,7 +6,9 @@ on:
     paths:
       - 'android/**'
       - '.github/workflows/android-apk.yml'
-      - 'index.html'\n      - 'package.json'\n      - 'package-lock.json'
+      - 'index.html'
+      - 'package.json'
+      - 'package-lock.json'
   workflow_dispatch:
 
 permissions:
@@ -14,7 +16,7 @@ permissions:
 
 jobs:
   build-apk:
-    name: Build installable Android APK
+    name: Build installable offline Android APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -25,6 +27,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -38,6 +45,13 @@ jobs:
 
       - name: Install Android SDK packages
         run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Bundle offline game assets
+        run: |
+          mkdir -p android/app/src/main/assets/vendor
+          cp index.html android/app/src/main/assets/index.html
+          npm install --no-save --no-package-lock three@0.170.0
+          cp node_modules/three/build/three.module.js android/app/src/main/assets/vendor/three.module.js
 
       - name: Build debug APK
         run: gradle --no-daemon --stacktrace assembleDebug
@@ -62,10 +76,10 @@ jobs:
           tag_name: df26-android-v1.0.1
           name: Dream Football 2026 - Android v1.0.1
           body: |
-            Installable Android debug APK for Dream Football 2026 Zakareya.
-
-            This app is a landscape Android WebView wrapper and requires internet access to load the hosted 3D game.
-            It is not an offline-native game or a Play Store-signed production release.
+            Offline Android debug APK for Dream Football 2026 Zakareya.
+            The game HTML and Three.js module are bundled inside the APK.
+            Gameplay does not require internet access after installation.
+            This is a debug-signed testing APK, not a Play Store production-signed release.
           files: |
             release/DF26-Android.apk
             release/DF26-Android.apk.sha256
