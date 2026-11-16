@@ -39,7 +39,7 @@ namespace Zakareya.DreamFootball.Input
                     {
                         Vector3 target = passTarget != null
                             ? passTarget.position
-                            : transform.root.position + transform.root.forward * defaultPassDistance;
+                            : (motor != null ? motor.transform.position : transform.position) + (motor != null ? motor.transform.forward : transform.forward) * defaultPassDistance;
                         ballActions.Pass(target);
                     }
                     break;
@@ -49,7 +49,7 @@ namespace Zakareya.DreamFootball.Input
                     {
                         Vector3 target = shotTarget != null
                             ? shotTarget.position
-                            : transform.root.position + transform.root.forward * defaultShotDistance;
+                            : (motor != null ? motor.transform.position : transform.position) + (motor != null ? motor.transform.forward : transform.forward) * defaultShotDistance;
                         ballActions.Shoot(target);
                     }
                     break;
