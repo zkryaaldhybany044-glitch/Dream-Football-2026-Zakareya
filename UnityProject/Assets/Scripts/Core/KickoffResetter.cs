@@ -5,8 +5,8 @@ using Zakareya.DreamFootball.Ball;
 namespace Zakareya.DreamFootball.Core
 {
     /// <summary>
-    /// Optional goal-restart helper. Assign the ball, its kickoff spot, and player
-    /// transforms. It freezes the ball briefly, then resets all assigned actors.
+    /// Optional goal-restart helper. Assign matching player and spawn-point arrays,
+    /// plus the ball and its kickoff spot, in the Inspector.
     /// </summary>
     public sealed class KickoffResetter : MonoBehaviour
     {
@@ -14,6 +14,7 @@ namespace Zakareya.DreamFootball.Core
         [SerializeField] private MatchBall ball;
         [SerializeField] private Transform ballKickoffPoint;
         [SerializeField] private Transform[] players;
+        [SerializeField] private Transform[] playerSpawnPoints;
         [SerializeField, Min(0f)] private float restartDelay = 1.5f;
 
         private Coroutine pendingRestart;
@@ -27,6 +28,7 @@ namespace Zakareya.DreamFootball.Core
         {
             if (scoreboard != null) scoreboard.GoalScored -= OnGoalScored;
             if (pendingRestart != null) StopCoroutine(pendingRestart);
+            if (ball != null && ball.Body != null) ball.Body.isKinematic = false;
         }
 
         private void OnGoalScored(bool homeTeamScored)
@@ -41,16 +43,18 @@ namespace Zakareya.DreamFootball.Core
             if (ball.Body != null) ball.Body.isKinematic = true;
             yield return new WaitForSeconds(restartDelay);
 
-            if (players != null)
+            if (players != null && playerSpawnPoints != null)
             {
-                foreach (Transform player in players)
+                int count = Mathf.Min(players.Length, playerSpawnPoints.Length);
+                for (int i = 0; i < count; i++)
                 {
-                    if (player == null) continue;
+                    Transform player = players[i];
+                    Transform spawn = playerSpawnPoints[i];
+                    if (player == null || spawn == null) continue;
+
                     CharacterController controller = player.GetComponent<CharacterController>();
                     if (controller != null) controller.enabled = false;
-                    player.SetPositionAndRotation(
-                        player.position.x == float.NaN ? player.position : player.position,
-                        player.rotation);
+                    player.SetPositionAndRotation(spawn.position, spawn.rotation);
                     if (controller != null) controller.enabled = true;
                 }
             }
