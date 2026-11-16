@@ -20,6 +20,7 @@ Open this folder (UnityProject) as the Unity project root.
 - `MatchClock` and `MatchController`: separate 45-minute halves, pause/resume, and automatic halftime/fulltime transitions.
 - `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`).
 - `TouchJoystick`: UI pointer bridge for a virtual movement stick.
+- `TouchActionButton`: touch action bridge for sprint (hold), pass and shot (press).
 - `MatchBall` and `PlayerBallActions`: Rigidbody ball physics plus range-checked pass/shot impulses.
 - `PitchBuilder`: provisional regulation-sized pitch surface and markings for blockout tests. This is geometry for testing gameplay, not final stadium art.
 - `MatchFollowCamera`: smoothed third-person camera that follows the controlled player and subtly accounts for the ball.
@@ -49,3 +50,15 @@ GitHub Actions cannot activate Unity by guessing credentials. A cloud build need
 ## Legacy browser version
 
 The web prototype remains in the repository root and is not the native Unity project. It will not be presented as the requested finished game.
+
+## Scene wiring checklist (manual Unity Editor work still required)
+
+1. Create a match scene and add a ground object with a collider. Add `PitchBuilder` to an empty parent; assign grass and line materials where available.
+2. Add a player GameObject with `CharacterController`, `FootballerMotor`, and `PlayerBallActions`. Assign the follow camera to the motor's movement-camera field and assign the ball to the ball-actions component.
+3. Create a Canvas with a `GraphicRaycaster` and an `EventSystem` using the Input System UI module. Add a joystick background and handle; assign both RectTransforms and the player motor to `TouchJoystick`.
+4. Add separate UI touch targets with `TouchActionButton`: configure one as Sprint and assign the motor; configure Pass and Shoot buttons and assign the player's `PlayerBallActions`. Optionally assign world-space pass/shot target transforms. If no target is assigned, the action uses the controlled player's forward direction.
+5. Add a Rigidbody and collider to the ball and attach `MatchBall`. Add a `MatchScoreboard` to a match manager. Each goal mouth needs a trigger collider and `GoalTrigger` with its team-side setting and scoreboard reference.
+6. Add `MatchController` and `MatchClock` to the match manager. For restarts, configure `KickoffResetter` with the ball, a ball kickoff transform, and matching player/player-spawn arrays.
+7. Add `MatchFollowCamera` to the camera and assign its target player. Add `GoalkeeperMotor` to each goalkeeper and assign its ball and goal-line references.
+
+The checklist describes required manual setup; it does not mean a scene has already been created or validated. UI touch controls require a functioning EventSystem, and all serialized references must be assigned in the Inspector.
