@@ -15,6 +15,16 @@ This is a project foundation, **not a playable football game yet**. It deliberat
 
 Open this folder (UnityProject) as the Unity project root.
 
+## Implemented code foundation (not yet Unity-tested)
+
+- `MatchClock` and `MatchController`: initial match phase and clock logic.
+- `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`).
+- `TouchJoystick`: UI pointer bridge for a virtual movement stick.
+- `MatchBall` and `PlayerBallActions`: Rigidbody ball physics plus range-checked pass/shot impulses.
+- `PitchBuilder`: provisional regulation-sized pitch surface and markings for blockout tests. This is geometry for testing gameplay, not final stadium art.
+
+These scripts still need to be assembled in a Unity scene, assigned references/materials, compiled in the target Unity Editor, and tested on Android. No playable APK exists yet.
+
 ## Planned implementation sequence
 1. **Foundation:** project settings, URP renderer, input and Android build configuration.
 2. **Visual vertical slice:** licensed realistic humanoid player, humanoid rig, retargeted locomotion/turn/sprint/kick animations, pitch and stadium lighting.
