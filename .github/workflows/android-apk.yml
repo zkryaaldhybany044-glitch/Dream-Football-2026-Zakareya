@@ -6,7 +6,7 @@ on:
     paths:
       - 'android/**'
       - '.github/workflows/android-apk.yml'
-      - 'index.html'
+      - 'index.html'\n      - 'package.json'\n      - 'package-lock.json'
   workflow_dispatch:
 
 permissions:
