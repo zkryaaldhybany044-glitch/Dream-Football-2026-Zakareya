@@ -26,6 +26,7 @@ namespace Zakareya.DreamFootball.Players
         [SerializeField, Min(0.1f)] private float pitchHalfWidth = 34f;
 
         private bool hasEngaged;
+        private bool externallyManaged;
         private Vector3 fallbackHome;
 
         private void Awake()
@@ -47,6 +48,9 @@ namespace Zakareya.DreamFootball.Players
 
         public void SetBall(MatchBall matchBall) => ball = matchBall;
 
+        /// <summary>When externally managed, this component stops moving while disabled so another positioning motor can take over.</summary>
+        public void SetExternallyManaged(bool managed) => externallyManaged = managed;
+
         /// <summary>Call from the match/team state when this team is defending.</summary>
         public void SetPressingEnabled(bool enabled)
         {
@@ -56,7 +60,7 @@ namespace Zakareya.DreamFootball.Players
 
         private void Update()
         {
-            if (ball == null) return;
+            if (ball == null || (!pressingEnabled && externallyManaged)) return;
 
             Vector3 home = homeAnchor != null ? homeAnchor.position : fallbackHome;
             Vector3 position = transform.position;
