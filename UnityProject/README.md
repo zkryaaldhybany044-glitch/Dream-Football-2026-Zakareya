@@ -18,7 +18,7 @@ Open this folder (UnityProject) as the Unity project root.
 ## Implemented code foundation (not yet Unity-tested)
 
 - `MatchClock` and `MatchController`: separate 45-minute halves, pause/resume, automatic halftime/fulltime transitions, and inspector-time validation of clock settings.
-- `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`) and a read-only movement-state interface.
+- `FootballerMotor`: character-controller locomotion with Animator parameters (`MoveSpeed`, `IsSprinting`) and a read-only movement-state interface.\n- `TeamPositioningAI`: lightweight offline tactical positioning for individual AI outfield players using formation home anchors, role-based ball influence, pitch bounds, and smoothed movement. It is a positioning prototype, not a full decision-making, marking, passing, or tackling system.
 - `BallControlAssist`: capped Rigidbody force assistance that keeps a nearby ball in front of a moving player for a basic dribbling prototype.
 - `TouchJoystick`: UI pointer bridge for a virtual movement stick.
 - `TouchActionButton`: touch action bridge for sprint (hold), pass and shot (press).
@@ -36,7 +36,7 @@ These scripts still need to be assembled in a Unity scene, assigned references/m
 1. **Project validation:** verify Unity package compatibility, complete project settings, URP renderer, input and Android build configuration.
 2. **Visual vertical slice:** licensed realistic humanoid player, humanoid rig, retargeted locomotion/turn/sprint/kick animations, pitch and stadium lighting.
 3. **Playable match:** integrate and test ball control, passing, shooting, goal detection/restart, goalkeeper saves, touch controls and camera in a real scene.
-4. **Team simulation:** 11v11 formations, player roles, team tactics, opponent AI, substitutions and match rules.
+4. **Team simulation:** extend `TeamPositioningAI` into coordinated 11v11 formations, player roles, marking, pressing, passing decisions, opponent AI, substitutions and match rules.
 5. **Offline Android build:** package all required assets, build ARM64 APK in CI, install and profile on the target phone.
 
 ## Important build constraint
@@ -81,3 +81,8 @@ Clock timing values and ball physics tuning values are clamped to safe minimums 
 ## Goalkeeper save-zone notes
 
 Place `GoalkeeperSaveZone` on a trigger collider covering the intended keeper contact area. Configure the defended X end consistently with `GoalkeeperMotor`. When the ball enters while travelling toward that goal above the minimum incoming speed, the component redirects its Rigidbody velocity away from the goal and adds a configurable lateral rebound and small lift. The trigger is intentionally optional and should not overlap the goal line or field in a way that causes unintended deflections. The response is immediate and has no dive animation, reach check, hand contact, catch, or keeper decision AI. Test trigger dimensions and rebound tuning in Unity before treating it as match-ready.
+
+
+## Team positioning AI notes
+
+Add `TeamPositioningAI` to each AI-controlled outfield player, assign the match ball, and place a separate home-anchor Transform at that player's intended formation position. Select Defender, Midfielder, or Forward and set the team's attack direction consistently. The component uses the anchor as its shape reference, shifts toward the ball with role-dependent influence, clamps targets to the configured pitch bounds, and smoothly moves and faces the ball. If no anchor is assigned, the player's position at startup is used as its home position. Do not let another movement component write to the same Transform at the same time. This is a lightweight positioning layer only: it does not yet implement team-wide spacing coordination, offside logic, marking assignments, possession decisions, passes, tackles, or goalkeeper behavior. All values require tuning in a real Unity scene.
