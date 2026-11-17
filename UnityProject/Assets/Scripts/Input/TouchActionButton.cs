@@ -15,12 +15,14 @@ namespace Zakareya.DreamFootball.Input
         {
             Sprint,
             Pass,
-            Shoot
+            Shoot,
+            Tackle
         }
 
         [SerializeField] private ActionType action = ActionType.Pass;
         [SerializeField] private FootballerMotor motor;
         [SerializeField] private PlayerBallActions ballActions;
+        [SerializeField] private TackleAction tackleAction;
         [SerializeField] private Transform passTarget;
         [SerializeField] private Transform shotTarget;
         [SerializeField, Min(1f)] private float defaultPassDistance = 8f;
@@ -42,6 +44,10 @@ namespace Zakareya.DreamFootball.Input
                             : (motor != null ? motor.transform.position : transform.position) + (motor != null ? motor.transform.forward : transform.forward) * defaultPassDistance;
                         ballActions.Pass(target);
                     }
+                    break;
+
+                case ActionType.Tackle:
+                    if (tackleAction != null) tackleAction.TryTackle();
                     break;
 
                 case ActionType.Shoot:
