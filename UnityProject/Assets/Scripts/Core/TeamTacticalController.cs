@@ -34,6 +34,7 @@ namespace Zakareya.DreamFootball.Core
         private float lastPossessionTime = -1000f;
         private int appliedTeamId = int.MinValue;
         private PlayerTeamMember appliedPresser;
+        private PlayerTeamMember appliedOwner;
         private float nextRefreshTime;
 
         private void OnValidate()
@@ -112,11 +113,11 @@ namespace Zakareya.DreamFootball.Core
             PlayerTeamMember presser = possessingTeamId >= 0
                 ? FindNearestDefender(possessingTeamId)
                 : null;
-
-            if (!force && possessingTeamId == appliedTeamId && presser == appliedPresser)
-                return;
-
             PlayerTeamMember currentOwner = possessionTracker.CurrentOwner;
+
+            if (!force && possessingTeamId == appliedTeamId &&
+                presser == appliedPresser && currentOwner == appliedOwner)
+                return;
 
             for (int i = 0; i < players.Length; i++)
             {
@@ -139,6 +140,7 @@ namespace Zakareya.DreamFootball.Core
 
             appliedTeamId = possessingTeamId;
             appliedPresser = presser;
+            appliedOwner = currentOwner;
         }
 
         private PlayerTeamMember FindNearestDefender(int possessingTeamId)
@@ -186,6 +188,7 @@ namespace Zakareya.DreamFootball.Core
 
             appliedTeamId = -1;
             appliedPresser = null;
+            appliedOwner = null;
         }
     }
 }
