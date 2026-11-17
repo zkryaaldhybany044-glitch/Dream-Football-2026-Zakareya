@@ -121,8 +121,9 @@ namespace Zakareya.DreamFootball.Core
                 float x = -pitchHalfLength + slot.progress * pitchHalfLength * 2f;
                 if (!attackPositiveX) x = -x;
 
+                float lateral = attackPositiveX ? slot.lateral : -slot.lateral;
                 assignment.runtimeAnchor.localPosition = new Vector3(
-                    x, 0f, slot.lateral * pitchHalfWidth);
+                    x, 0f, lateral * pitchHalfWidth);
 
                 assignment.positioning.SetHomeAnchor(assignment.runtimeAnchor);
                 assignment.positioning.SetRole(slot.role);
