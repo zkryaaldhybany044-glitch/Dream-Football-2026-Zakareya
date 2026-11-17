@@ -64,7 +64,7 @@ namespace Zakareya.DreamFootball.Players
 
             // Move the formation block toward the ball while retaining its shape.
             Vector3 target = home;
-            target.x += (ballPosition.x - 0f) * ballInfluence * roleInfluence;
+            target.x += (ballPosition.x - home.x) * ballInfluence * roleInfluence;
             target.z += (ballPosition.z - home.z) * ballInfluence * roleInfluence * lateralShift;
 
             // Forwards stay ahead of the ball more often; defenders avoid being
