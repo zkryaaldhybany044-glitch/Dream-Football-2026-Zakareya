@@ -16,6 +16,7 @@ namespace Zakareya.DreamFootball.Core
         private sealed class PlayerUnit
         {
             public PlayerTeamMember identity;
+            public TeamPositioningAI positioning;
             public TeamPassingAI passing;
             public TeamPressingAI pressing;
             public TackleAction tackling;
@@ -131,8 +132,16 @@ namespace Zakareya.DreamFootball.Core
                 if (unit.passing != null)
                     unit.passing.SetPassingEnabled(isCurrentOwner);
 
+                bool pressingOwnsMovement = isDesignatedPresser && unit.pressing != null;
+
+                if (unit.positioning != null)
+                    unit.positioning.SetPositioningEnabled(!pressingOwnsMovement);
+
                 if (unit.pressing != null)
+                {
+                    unit.pressing.SetExternallyManaged(true);
                     unit.pressing.SetPressingEnabled(isDesignatedPresser);
+                }
 
                 if (unit.tackling != null)
                     unit.tackling.SetAutomaticTackling(isDesignatedPresser);
@@ -182,7 +191,12 @@ namespace Zakareya.DreamFootball.Core
                 if (unit == null) continue;
 
                 if (unit.passing != null) unit.passing.SetPassingEnabled(false);
-                if (unit.pressing != null) unit.pressing.SetPressingEnabled(false);
+                if (unit.positioning != null) unit.positioning.SetPositioningEnabled(true);
+                if (unit.pressing != null)
+                {
+                    unit.pressing.SetExternallyManaged(true);
+                    unit.pressing.SetPressingEnabled(false);
+                }
                 if (unit.tackling != null) unit.tackling.SetAutomaticTackling(false);
             }
 
