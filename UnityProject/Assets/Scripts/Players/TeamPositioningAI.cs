@@ -50,6 +50,8 @@ namespace Zakareya.DreamFootball.Players
 
         public void SetBall(MatchBall matchBall) => ball = matchBall;
         public void SetHomeAnchor(Transform anchor) => homeAnchor = anchor;
+        public void SetRole(PlayerRole newRole) => role = newRole;
+        public void SetAttackPositiveX(bool positiveX) => attackPositiveX = positiveX;
 
         private void Update()
         {
