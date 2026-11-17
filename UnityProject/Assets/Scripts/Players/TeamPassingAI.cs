@@ -15,6 +15,7 @@ namespace Zakareya.DreamFootball.Players
         [SerializeField] private Transform[] teammates;
         [SerializeField] private Transform[] opponents;
         [SerializeField] private bool attackPositiveX = true;
+        [SerializeField] private bool passingEnabled = true;
 
         [Header("Pass selection")]
         [SerializeField, Min(0.2f)] private float controlRange = 1.5f;
@@ -45,10 +46,11 @@ namespace Zakareya.DreamFootball.Players
         public void SetBall(MatchBall matchBall) => ball = matchBall;
         public void SetTeammates(Transform[] players) => teammates = players;
         public void SetOpponents(Transform[] players) => opponents = players;
+        public void SetPassingEnabled(bool enabled) => passingEnabled = enabled;
 
         private void Update()
         {
-            if (ball == null || Time.time < nextDecisionTime) return;
+            if (!passingEnabled || ball == null || Time.time < nextDecisionTime) return;
             if (Vector3.Distance(transform.position, ball.transform.position) > controlRange)
                 return;
 
