@@ -31,6 +31,7 @@ namespace Zakareya.DreamFootball.Players
         [SerializeField, Min(0.01f)] private float positionTolerance = 0.15f;
 
         private Vector3 fallbackHomePosition;
+        private Vector3 tacticalHomeOffset;
         [SerializeField] private bool positioningEnabled = true;
 
         private void Awake()
@@ -49,17 +50,20 @@ namespace Zakareya.DreamFootball.Players
             positionTolerance = Mathf.Max(0.01f, positionTolerance);
         }
 
+        public PlayerRole Role => role;
+
         public void SetBall(MatchBall matchBall) => ball = matchBall;
         public void SetHomeAnchor(Transform anchor) => homeAnchor = anchor;
         public void SetRole(PlayerRole newRole) => role = newRole;
         public void SetAttackPositiveX(bool positiveX) => attackPositiveX = positiveX;
         public void SetPositioningEnabled(bool enabled) => positioningEnabled = enabled;
+        public void SetTacticalHomeOffset(Vector3 offset) => tacticalHomeOffset = offset;
 
         private void Update()
         {
             if (!positioningEnabled || ball == null) return;
 
-            Vector3 home = homeAnchor != null ? homeAnchor.position : fallbackHomePosition;
+            Vector3 home = (homeAnchor != null ? homeAnchor.position : fallbackHomePosition) + tacticalHomeOffset;
             Vector3 ballPosition = ball.transform.position;
             float direction = attackPositiveX ? 1f : -1f;
 
